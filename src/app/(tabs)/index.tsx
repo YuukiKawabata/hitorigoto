@@ -1,9 +1,8 @@
-```javascript
-import React, { useState } from 'react';
-import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import * as ImagePicker from 'expo-image-picker';
 import { useSQLiteContext } from 'expo-sqlite';
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import React, { useState } from 'react';
+import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SoliloquyScreen() {
@@ -96,4 +95,3 @@ export default function SoliloquyScreen() {
     </SafeAreaView>
   );
 }
-```
