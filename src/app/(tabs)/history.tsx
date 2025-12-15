@@ -34,23 +34,37 @@ export default function HistoryScreen() {
     setRefreshing(false);
   }, [loadHistory]);
 
+import { Link, useRouter } from 'expo-router';
+import { View, Text, FlatList, Image, RefreshControl, TouchableOpacity } from 'react-native';
+
+// ... (imports)
+
+export default function HistoryScreen() {
+  const db = useSQLiteContext();
+  const router = useRouter();
+  // ... (state and effects)
+
   const renderItem = ({ item }: { item: Soliloquy }) => (
-    <View className="bg-white p-4 mb-3 rounded-lg shadow-sm mx-4 border border-gray-100">
-      <Text className="text-gray-400 text-xs mb-2">
-        {format(new Date(item.created_at), 'yyyy/MM/dd HH:mm')}
-      </Text>
-      <Text className="text-sumi-gray text-base leading-6 mb-2">
-        {item.content}
-      </Text>
-      {item.image_uri && (
-        <Image 
-          source={{ uri: item.image_uri }} 
-          className="w-full h-48 rounded-md mt-2"
-          resizeMode="cover"
-        />
-      )}
-    </View>
+    <Link href={`/soliloquy/${item.id}`} asChild>
+      <TouchableOpacity className="bg-white p-4 mb-3 rounded-lg shadow-sm mx-4 border border-gray-100">
+        <Text className="text-gray-400 text-xs mb-2">
+          {format(new Date(item.created_at), 'yyyy/MM/dd HH:mm')}
+        </Text>
+        <Text className="text-sumi-gray text-base leading-6 mb-2" numberOfLines={3}>
+          {item.content}
+        </Text>
+        {item.image_uri && (
+          <Image 
+            source={{ uri: item.image_uri }} 
+            className="w-full h-48 rounded-md mt-2"
+            resizeMode="cover"
+          />
+        )}
+      </TouchableOpacity>
+    </Link>
   );
+  
+  // ...
 
   return (
     <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>

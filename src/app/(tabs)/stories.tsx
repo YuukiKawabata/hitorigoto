@@ -50,19 +50,33 @@ export default function StoriesScreen() {
     }
   };
 
+import { Link, useRouter } from 'expo-router';
+
+// ... imports
+
+export default function StoriesScreen() {
+  // ... hooks
+  const router = useRouter();
+
+  // ... 
+
   const renderItem = ({ item }: { item: Story }) => (
-    <View className="bg-white p-4 mb-3 rounded-lg shadow-sm mx-4 border border-gray-100">
-      <Text className="text-lg font-bold text-sumi-gray mb-1">
-        {item.title}
-      </Text>
-      <Text className="text-gray-400 text-xs mb-3">
-        {format(new Date(item.created_at), 'yyyy/MM/dd')} 作成
-      </Text>
-      <Text className="text-sumi-gray text-base leading-6" numberOfLines={3}>
-        {item.content}
-      </Text>
-    </View>
+    <Link href={`/story/${item.id}`} asChild>
+      <TouchableOpacity className="bg-white p-4 mb-3 rounded-lg shadow-sm mx-4 border border-gray-100">
+        <Text className="text-lg font-bold text-sumi-gray mb-1">
+          {item.title}
+        </Text>
+        <Text className="text-gray-400 text-xs mb-3">
+          {format(new Date(item.created_at), 'yyyy/MM/dd')} 作成
+        </Text>
+        <Text className="text-sumi-gray text-base leading-6" numberOfLines={3}>
+          {item.content}
+        </Text>
+      </TouchableOpacity>
+    </Link>
   );
+
+  // ...
 
   return (
     <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
