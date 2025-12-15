@@ -17,15 +17,19 @@ export default function SoliloquyScreen() {
     setToday(format(new Date(), 'yyyy年MM月dd日 EEEE', { locale: ja }));
   }, []);
 
+  const [aspectRatio, setAspectRatio] = useState(1);
+
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false, // Use original image
       quality: 0.8,
     });
 
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      const asset = result.assets[0];
+      setImageUri(asset.uri);
+      setAspectRatio(asset.width / asset.height);
     }
   };
 
@@ -78,8 +82,12 @@ export default function SoliloquyScreen() {
           />
 
           {imageUri && (
-            <View className="mb-4 relative rounded-xl overflow-hidden bg-gray-50 shadow-sm border border-gray-100">
-              <Image source={{ uri: imageUri }} className="w-full h-48" resizeMode="cover" />
+            <View className="mb-4 relative rounded-md overflow-hidden bg-gray-50 shadow-sm border border-gray-100 mx-auto" style={{ width: '100%', maxHeight: 300 }}>
+               <Image 
+                source={{ uri: imageUri }} 
+                style={{ width: '100%', aspectRatio: aspectRatio }}
+                resizeMode="contain" 
+              />
               <TouchableOpacity 
                 onPress={() => setImageUri(null)}
                 className="absolute top-2 right-2 bg-black/40 rounded-full p-1"
