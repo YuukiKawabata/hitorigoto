@@ -83,8 +83,8 @@ export default function SoliloquyScreen() {
 
           {imageUri && (
             <View 
-              className="mb-4 relative rounded-md overflow-hidden bg-gray-50 shadow-sm border border-gray-100 mx-auto" 
-              style={{ width: '100%', aspectRatio: aspectRatio, maxHeight: 400 }}
+              className="mb-4 relative rounded-md overflow-hidden bg-gray-100 shadow-sm border border-gray-200 mx-auto" 
+              style={{ width: '100%', height: 320 }}
             >
                <Image 
                 source={{ uri: imageUri }} 
