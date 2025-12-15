@@ -46,7 +46,7 @@ export default function SoliloquyScreen() {
   return (
     <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
       <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1"
         keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
       >
@@ -86,18 +86,18 @@ export default function SoliloquyScreen() {
               <IconSymbol name="photo" size={24} color="#333" />
             </TouchableOpacity>
           </View>
-
-          <View className="mt-auto mb-4">
-            <TouchableOpacity
-              onPress={submitSoliloquy}
-              className="bg-sumi-gray py-4 rounded-full items-center shadow-lg active:opacity-90"
-            >
-              <Text className="text-white text-lg font-bold tracking-widest">
-                ひとりごとボタン
-              </Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
+
+        <View className="p-4 bg-off-white border-t border-gray-100">
+          <TouchableOpacity
+            onPress={submitSoliloquy}
+            className="bg-sumi-gray py-4 rounded-full items-center shadow-lg active:opacity-90"
+          >
+            <Text className="text-white text-lg font-bold tracking-widest">
+              ひとりごとボタン
+            </Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
