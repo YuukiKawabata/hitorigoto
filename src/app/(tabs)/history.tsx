@@ -1,4 +1,3 @@
-```typescript
 import { Soliloquy } from '@/db/schema';
 import { format } from 'date-fns';
 import { useFocusEffect } from 'expo-router';
@@ -72,4 +71,4 @@ export default function HistoryScreen() {
     </SafeAreaView>
   );
 }
-```
+

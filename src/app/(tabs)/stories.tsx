@@ -1,4 +1,3 @@
-```javascript
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Story } from '@/db/schema';
 import { generateStoryMock } from '@/services/ai';
@@ -99,4 +98,4 @@ export default function StoriesScreen() {
     </SafeAreaView>
   );
 }
-```
+
