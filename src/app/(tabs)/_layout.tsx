@@ -26,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: '履歴',
+          title: '記憶',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={color} />,
         }}
       />
