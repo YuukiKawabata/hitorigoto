@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { db } from '@/db/db';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import * as ImagePicker from 'expo-image-picker';
+import { useSQLiteContext } from 'expo-sqlite';
+import React, { useState } from 'react';
+import { Alert, Image, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function SoliloquyScreen() {
+  const db = useSQLiteContext();
   const [content, setContent] = useState('');
   const [imageUri, setImageUri] = useState<string | null>(null);
 
@@ -26,7 +27,7 @@ export default function SoliloquyScreen() {
     }
 
     try {
-      db.runSync(
+      await db.runAsync(
         'INSERT INTO soliloquies (content, image_uri, created_at) VALUES (?, ?, ?)',
         content,
         imageUri,

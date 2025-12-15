@@ -1,24 +1,25 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, Image, RefreshControl } from 'react-native';
-import { useFocusEffect } from 'expo-router';
-import { format } from 'date-fns';
-import { db } from '@/db/db';
 import { Soliloquy } from '@/db/schema';
+import { format } from 'date-fns';
+import { useFocusEffect } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
+import React, { useCallback, useState } from 'react';
+import { FlatList, Image, RefreshControl, Text, View } from 'react-native';
 
 export default function HistoryScreen() {
+  const db = useSQLiteContext();
   const [history, setHistory] = useState<Soliloquy[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const loadHistory = useCallback(() => {
+  const loadHistory = useCallback(async () => {
     try {
-      const rows = db.getAllSync<Soliloquy>(
+      const rows = await db.getAllAsync<Soliloquy>(
         'SELECT * FROM soliloquies ORDER BY created_at DESC'
       );
       setHistory(rows);
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [db]);
 
   useFocusEffect(
     useCallback(() => {

@@ -1,27 +1,28 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert, RefreshControl } from 'react-native';
-import { useFocusEffect } from 'expo-router';
-import { format } from 'date-fns';
-import { db } from '@/db/db';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Story } from '@/db/schema';
 import { generateStoryMock } from '@/services/ai';
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import { format } from 'date-fns';
+import { useFocusEffect } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
+import React, { useCallback, useState } from 'react';
+import { Alert, FlatList, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 
 export default function StoriesScreen() {
+  const db = useSQLiteContext();
   const [stories, setStories] = useState<Story[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [generating, setGenerating] = useState(false);
 
-  const loadStories = useCallback(() => {
+  const loadStories = useCallback(async () => {
     try {
-      const rows = db.getAllSync<Story>(
+      const rows = await db.getAllAsync<Story>(
         'SELECT * FROM stories ORDER BY created_at DESC'
       );
       setStories(rows);
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [db]);
 
   useFocusEffect(
     useCallback(() => {
@@ -37,7 +38,7 @@ export default function StoriesScreen() {
 
   const handleGenerate = async () => {
     setGenerating(true);
-    const result = await generateStoryMock();
+    const result = await generateStoryMock(db);
     setGenerating(false);
 
     if (result) {

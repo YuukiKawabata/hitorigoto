@@ -1,10 +1,10 @@
 import { Soliloquy, Story } from '@/db/schema';
-import { db } from '@/db/db';
+import { type SQLiteDatabase } from 'expo-sqlite';
 
-export const generateStoryMock = async (): Promise<Story | null> => {
+export const generateStoryMock = async (db: SQLiteDatabase): Promise<Story | null> => {
   try {
     // 1. Fetch recent soliloquies (Top 10 new ones)
-    const soliloquies = db.getAllSync<Soliloquy>('SELECT * FROM soliloquies ORDER BY created_at DESC LIMIT 10');
+    const soliloquies = await db.getAllAsync<Soliloquy>('SELECT * FROM soliloquies ORDER BY created_at DESC LIMIT 10');
     
     if (soliloquies.length === 0) return null;
 
@@ -20,7 +20,7 @@ export const generateStoryMock = async (): Promise<Story | null> => {
     const period_end = soliloquies[0].created_at;
     const created_at = Date.now();
 
-    const result = db.runSync(
+    const result = await db.runAsync(
       'INSERT INTO stories (title, content, period_start, period_end, created_at) VALUES (?, ?, ?, ?, ?)',
       title, content, period_start, period_end, created_at
     );

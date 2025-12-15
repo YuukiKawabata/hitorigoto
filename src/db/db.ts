@@ -1,9 +1,9 @@
-import * as SQLite from 'expo-sqlite';
+import { type SQLiteDatabase } from 'expo-sqlite';
 
-export const db = SQLite.openDatabaseSync('hitorigoto.db');
-
-export const initDatabase = () => {
-  db.execSync(`
+export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
+  const DATABASE_VERSION = 1;
+  // Initialize tables (Simple migration logic for MVP)
+  await db.execAsync(`
     PRAGMA journal_mode = WAL;
     CREATE TABLE IF NOT EXISTS soliloquies (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
