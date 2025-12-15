@@ -82,15 +82,19 @@ export default function SoliloquyScreen() {
           />
 
           {imageUri && (
-            <View className="mb-4 relative rounded-md overflow-hidden bg-gray-50 shadow-sm border border-gray-100 mx-auto" style={{ width: '100%', maxHeight: 300 }}>
+            <View 
+              className="mb-4 relative rounded-md overflow-hidden bg-gray-50 shadow-sm border border-gray-100 mx-auto" 
+              style={{ width: '100%', aspectRatio: aspectRatio, maxHeight: 400 }}
+            >
                <Image 
                 source={{ uri: imageUri }} 
-                style={{ width: '100%', aspectRatio: aspectRatio }}
+                className="flex-1 w-full h-full"
                 resizeMode="contain" 
               />
               <TouchableOpacity 
                 onPress={() => setImageUri(null)}
                 className="absolute top-2 right-2 bg-black/40 rounded-full p-1"
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
                 <IconSymbol name="xmark" size={16} color="white" /> 
               </TouchableOpacity>
