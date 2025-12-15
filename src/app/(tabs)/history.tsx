@@ -1,9 +1,11 @@
+```typescript
 import { Soliloquy } from '@/db/schema';
 import { format } from 'date-fns';
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HistoryScreen() {
   const db = useSQLiteContext();
@@ -52,12 +54,12 @@ export default function HistoryScreen() {
   );
 
   return (
-    <View className="flex-1 bg-off-white pt-4">
+    <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
       <FlatList
         data={history}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 20, paddingTop: 16 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -67,6 +69,7 @@ export default function HistoryScreen() {
           </View>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }
+```

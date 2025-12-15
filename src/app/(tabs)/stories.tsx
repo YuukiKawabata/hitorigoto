@@ -1,3 +1,4 @@
+```javascript
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Story } from '@/db/schema';
 import { generateStoryMock } from '@/services/ai';
@@ -6,6 +7,7 @@ import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
 import { Alert, FlatList, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function StoriesScreen() {
   const db = useSQLiteContext();
@@ -64,8 +66,8 @@ export default function StoriesScreen() {
   );
 
   return (
-    <View className="flex-1 bg-off-white pt-4">
-      <View className="px-4 mb-4">
+    <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
+      <View className="px-4 mb-4 pt-4">
         <TouchableOpacity
           onPress={handleGenerate}
           disabled={generating}
@@ -94,6 +96,7 @@ export default function StoriesScreen() {
           </View>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }
+```
