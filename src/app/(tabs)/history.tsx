@@ -1,9 +1,9 @@
 import { Soliloquy } from '@/db/schema';
 import { format } from 'date-fns';
-import { useFocusEffect } from 'expo-router';
+import { Link, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
-import { FlatList, Image, RefreshControl, Text, View } from 'react-native';
+import { FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HistoryScreen() {
@@ -34,23 +34,13 @@ export default function HistoryScreen() {
     setRefreshing(false);
   }, [loadHistory]);
 
-import { Link, useRouter } from 'expo-router';
-import { View, Text, FlatList, Image, RefreshControl, TouchableOpacity } from 'react-native';
-
-// ... (imports)
-
-export default function HistoryScreen() {
-  const db = useSQLiteContext();
-  const router = useRouter();
-  // ... (state and effects)
-
   const renderItem = ({ item }: { item: Soliloquy }) => (
     <Link href={`/soliloquy/${item.id}`} asChild>
       <TouchableOpacity className="bg-white p-4 mb-3 rounded-lg shadow-sm mx-4 border border-gray-100">
         <Text className="text-gray-400 text-xs mb-2">
           {format(new Date(item.created_at), 'yyyy/MM/dd HH:mm')}
         </Text>
-        <Text className="text-sumi-gray text-base leading-6 mb-2" numberOfLines={3}>
+        <Text className="text-sumi-gray text-base leading-6 mb-2">
           {item.content}
         </Text>
         {item.image_uri && (
@@ -63,8 +53,6 @@ export default function HistoryScreen() {
       </TouchableOpacity>
     </Link>
   );
-  
-  // ...
 
   return (
     <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
@@ -85,4 +73,3 @@ export default function HistoryScreen() {
     </SafeAreaView>
   );
 }
-

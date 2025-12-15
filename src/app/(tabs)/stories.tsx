@@ -2,7 +2,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Story } from '@/db/schema';
 import { generateStoryMock } from '@/services/ai';
 import { format } from 'date-fns';
-import { useFocusEffect } from 'expo-router';
+import { Link, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
 import { Alert, FlatList, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
@@ -50,16 +50,6 @@ export default function StoriesScreen() {
     }
   };
 
-import { Link, useRouter } from 'expo-router';
-
-// ... imports
-
-export default function StoriesScreen() {
-  // ... hooks
-  const router = useRouter();
-
-  // ... 
-
   const renderItem = ({ item }: { item: Story }) => (
     <Link href={`/story/${item.id}`} asChild>
       <TouchableOpacity className="bg-white p-4 mb-3 rounded-lg shadow-sm mx-4 border border-gray-100">
@@ -75,8 +65,6 @@ export default function StoriesScreen() {
       </TouchableOpacity>
     </Link>
   );
-
-  // ...
 
   return (
     <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
@@ -112,4 +100,3 @@ export default function StoriesScreen() {
     </SafeAreaView>
   );
 }
-
