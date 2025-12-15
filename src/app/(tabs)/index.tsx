@@ -1,14 +1,21 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import * as ImagePicker from 'expo-image-picker';
 import { useSQLiteContext } from 'expo-sqlite';
-import React, { useState } from 'react';
-import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SoliloquyScreen() {
   const db = useSQLiteContext();
   const [content, setContent] = useState('');
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [today, setToday] = useState('');
+
+  useEffect(() => {
+    setToday(format(new Date(), 'yyyy年MM月dd日 EEEE', { locale: ja }));
+  }, []);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -36,7 +43,7 @@ export default function SoliloquyScreen() {
       );
       setContent('');
       setImageUri(null);
-      Alert.alert('ひとりごと', '記録しました。');
+      Alert.alert('記録', 'ひとりごとを心に留めました。');
     } catch (error) {
       console.error(error);
       Alert.alert('エラー', '記録に失敗しました。');
@@ -44,57 +51,65 @@ export default function SoliloquyScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-off-white" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-off-white" edges={['top', 'bottom']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1"
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
+        style={{ flex: 1 }}
       >
-        <ScrollView 
-          contentContainerStyle={{ flexGrow: 1, padding: 24 }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Text className="text-2xl font-bold text-sumi-gray mb-6 text-center tracking-widest mt-4">
-            ひとりごと
+        {/* Header */}
+        <View className="px-6 pt-4 pb-2">
+          <Text className="text-gray-400 text-sm font-medium tracking-widest text-center">
+            {today}
           </Text>
+        </View>
 
+        {/* Input Area */}
+        <View className="flex-1 px-6 pt-2">
           <TextInput
-            className="bg-white p-4 rounded-xl border border-gray-200 text-lg text-sumi-gray min-h-[200px] mb-4 shadow-sm"
-            placeholder="今の気持ちは..."
-            placeholderTextColor="#9ca3af"
+            className="flex-1 text-lg text-sumi-gray leading-8"
+            placeholder="今日はどんな一日でしたか？"
+            placeholderTextColor="#d1d5db"
             multiline
             textAlignVertical="top"
             value={content}
             onChangeText={setContent}
-            autoFocus
+            style={{ fontFamily: Platform.OS === 'ios' ? 'Hiragino Mincho ProN' : 'serif' }}
           />
 
           {imageUri && (
-            <View className="mb-4 relative">
-              <Image source={{ uri: imageUri }} className="w-full h-48 rounded-lg" resizeMode="cover" />
+            <View className="mb-4 relative rounded-xl overflow-hidden bg-gray-50 shadow-sm border border-gray-100">
+              <Image source={{ uri: imageUri }} className="w-full h-48" resizeMode="cover" />
               <TouchableOpacity 
                 onPress={() => setImageUri(null)}
-                className="absolute top-2 right-2 bg-black/50 rounded-full p-1"
+                className="absolute top-2 right-2 bg-black/40 rounded-full p-1"
               >
-                <IconSymbol name="xmark" size={20} color="white" /> 
+                <IconSymbol name="xmark" size={16} color="white" /> 
               </TouchableOpacity>
             </View>
           )}
+        </View>
 
-          <View className="flex-row justify-end items-center mb-6">
-            <TouchableOpacity onPress={pickImage} className="p-3 bg-white rounded-full border border-gray-200 shadow-sm">
-              <IconSymbol name="photo" size={24} color="#333" />
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        {/* Toolbar */}
+        <View className="flex-row items-center justify-between px-4 py-3 bg-off-white border-t border-gray-100">
+          <TouchableOpacity 
+            onPress={pickImage} 
+            className="p-3 rounded-full hover:bg-gray-100 active:bg-gray-100"
+          >
+            <IconSymbol name="photo" size={24} color="#666" />
+          </TouchableOpacity>
 
-        <View className="p-4 bg-off-white border-t border-gray-100">
           <TouchableOpacity
             onPress={submitSoliloquy}
-            className="bg-sumi-gray py-4 rounded-full items-center shadow-lg active:opacity-90"
+            disabled={!content.trim() && !imageUri}
+            className={`px-6 py-2 rounded-full ${
+              (!content.trim() && !imageUri) ? 'bg-gray-200' : 'bg-sumi-gray'
+            }`}
           >
-            <Text className="text-white text-lg font-bold tracking-widest">
-              ひとりごとボタン
+            <Text className={`font-bold ${
+              (!content.trim() && !imageUri) ? 'text-gray-400' : 'text-white'
+            }`}>
+              残す
             </Text>
           </TouchableOpacity>
         </View>
