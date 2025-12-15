@@ -48,20 +48,25 @@ export default function SoliloquyScreen() {
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }}>
-          <Text className="text-2xl font-bold text-sumi-gray mb-8 text-center tracking-widest">
+        <ScrollView 
+          contentContainerStyle={{ flexGrow: 1, padding: 24 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text className="text-2xl font-bold text-sumi-gray mb-6 text-center tracking-widest mt-4">
             ひとりごと
           </Text>
 
           <TextInput
-            className="bg-white p-4 rounded-xl border border-gray-200 text-lg text-sumi-gray min-h-[150px] mb-4"
+            className="bg-white p-4 rounded-xl border border-gray-200 text-lg text-sumi-gray min-h-[200px] mb-4 shadow-sm"
             placeholder="今の気持ちは..."
             placeholderTextColor="#9ca3af"
             multiline
             textAlignVertical="top"
             value={content}
             onChangeText={setContent}
+            autoFocus
           />
 
           {imageUri && (
@@ -76,20 +81,22 @@ export default function SoliloquyScreen() {
             </View>
           )}
 
-          <View className="flex-row justify-between items-center mb-6">
-            <TouchableOpacity onPress={pickImage} className="p-3 bg-white rounded-full border border-gray-200">
+          <View className="flex-row justify-end items-center mb-6">
+            <TouchableOpacity onPress={pickImage} className="p-3 bg-white rounded-full border border-gray-200 shadow-sm">
               <IconSymbol name="photo" size={24} color="#333" />
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            onPress={submitSoliloquy}
-            className="bg-sumi-gray py-4 rounded-full items-center shadow-lg active:opacity-90"
-          >
-            <Text className="text-white text-lg font-bold tracking-widest">
-              ひとりごとボタン
-            </Text>
-          </TouchableOpacity>
+          <View className="mt-auto mb-4">
+            <TouchableOpacity
+              onPress={submitSoliloquy}
+              className="bg-sumi-gray py-4 rounded-full items-center shadow-lg active:opacity-90"
+            >
+              <Text className="text-white text-lg font-bold tracking-widest">
+                ひとりごとボタン
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
